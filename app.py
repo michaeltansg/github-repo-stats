@@ -15,7 +15,7 @@ REPORT_EXPIRY_IN_SECONDS = os.getenv("REPORT_EXPIRY_IN_SECONDS")
 def fetch_data() -> list:
     """ Fetch data from GitHub """
     # Read the CSV file into a DataFrame
-    df = pd.read_csv("path_to_your_csv_file/repositories.csv")
+    df = pd.read_csv("./repositories.csv")
 
     # Convert the DataFrame to a list
     repositories = df["Repositories"].tolist()
