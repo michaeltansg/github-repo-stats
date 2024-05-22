@@ -13,6 +13,7 @@ class GithubStats:
         }
 
     def get_repo_stats(self, owner, repo):
+        print(f"Retrieving info for {owner}/{repo}....")
         # Send a GET request to get the repository data
         repo_response = requests.get(f"https://api.github.com/repos/{owner}/{repo}", headers=self.headers)
         repo_data = repo_response.json()
@@ -87,7 +88,7 @@ class GithubStats:
             else:
                 break  # if data is an empty list, we've reached the end and exit the loop
 
-        print(f"Found {len(contributors)} contributors")
+        # print(f"Found {len(contributors)} contributors")
         return contributors
 
     @retry(stop=stop_after_attempt(3), wait=wait_fixed(2))

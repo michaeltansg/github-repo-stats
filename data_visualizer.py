@@ -31,6 +31,18 @@ class DataVisualizer:
         def format_num(num):
             return str(num) if num < 1000 else str(np.round(num / 1000, 1)) + 'K'
 
+        # Helper function to create a bar chart for a given axis and column
+        def create_bar_chart(ax, title, ylabel, column, round_values=False):
+            values = self.data_frame[column].round(1) if round_values else self.data_frame[column]
+            ax.bar(self.data_frame['Project Name'], values, color='skyblue')
+            ax.set_title(title)
+            ax.set_ylabel(ylabel)
+            max_height = max(values)
+            ax.set_ylim(0, max_height * 1.2)
+            for i, v in enumerate(values):
+                ax.text(i, v + 3, format_num(v), ha='center', va='bottom')
+            ax.tick_params(axis='x', rotation=45)
+
         # Set up the figure and the axes
         fig, axs = plt.subplots(nrows=3, figsize=(10, 8))
 
@@ -38,36 +50,10 @@ class DataVisualizer:
         formatter = ticker.FuncFormatter(ticker_formatter)
         [ax.yaxis.set_major_formatter(formatter) for ax in axs]
 
-        # Number of Contributors
-        axs[0].bar(self.data_frame['Project Name'], self.data_frame['Number of Contributors'], color='skyblue')
-        axs[0].set_title('Number of Contributors for Each Project')
-        axs[0].set_ylabel('Number of Contributors')
-        for i, v in enumerate(self.data_frame['Number of Contributors']):
-            axs[0].text(i, v + 3, format_num(v), ha='center', va='bottom')
-        max_height = max(self.data_frame['Number of Contributors'])
-        axs[0].set_ylim(0, max_height * 1.2)
-        axs[0].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for better visibility
-
-        # Number of Stars
-        axs[1].bar(self.data_frame['Project Name'], self.data_frame['Stars'], color='skyblue')
-        axs[1].set_title('Number of Stars for Each Project')
-        axs[1].set_ylabel('Number of Stars')
-        for i, v in enumerate(self.data_frame['Stars']):
-            axs[1].text(i, v + 3, format_num(v), ha='center', va='bottom')
-        max_height = max(self.data_frame['Stars'])
-        axs[1].set_ylim(0, max_height * 1.2)
-        axs[1].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for better visibility
-
-        # Average Commits per Month
-        axs[2].bar(self.data_frame['Project Name'], self.data_frame['Average Commits per Month'], color='skyblue')
-        axs[2].set_title('Average Commits per Month for Each Project')
-        axs[2].set_xlabel('Project Name')
-        axs[2].set_ylabel('Average Commits per Month')
-        for i, v in enumerate(self.data_frame['Average Commits per Month']):
-            axs[2].text(i, v + 3, format_num(round(v)), ha='center', va='bottom')
-        max_height = max(self.data_frame['Average Commits per Month'])
-        axs[2].set_ylim(0, max_height * 1.2)
-        axs[2].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for better visibility
+        # Create bar charts
+        create_bar_chart(axs[0], 'Number of Contributors for Each Project', 'Number of Contributors', 'Number of Contributors')
+        create_bar_chart(axs[1], 'Number of Stars for Each Project', 'Number of Stars', 'Stars')
+        create_bar_chart(axs[2], 'Average Commits per Month for Each Project', 'Average Commits per Month', 'Average Commits per Month', round_values=True)
 
         # Adjust the layout
         plt.tight_layout()

@@ -10,28 +10,41 @@ from data_visualizer import DataVisualizer
 load_dotenv()
 
 TOKEN = os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN")
+REPORT_EXPIRY_IN_SECONDS = os.getenv("REPORT_EXPIRY_IN_SECONDS")
 
 def fetch_data() -> list:
     """ Fetch data from GitHub """
     repositories = [
-        ("Microsoft", "vscode"),
-        ("kubernetes", "kubernetes"),
-        ("ansible", "ansible"),
-        ("hashicorp", "terraform"),
-        ("apache", "spark"),
-        ("moby", "moby"),
-        ("pandas-dev", "pandas"),
-        ("facebook", "react"),
-        ("flutter", "flutter"),
-        ("npm", "cli"),
-        ("StanGirard", "quivr"),
-        ("hwchase17", "langchain"),
+        "beam-cloud/beta9",
+        "PawanOsman/ChatGPT",
+        "myshell-ai/OpenVoice",
+        "unslothai/unsloth",
+        "infiniflow/ragflow",
+        "ItzCrazyKns/Perplexica",
+        "VinciGit00/Scrapegraph-ai",
+        "assafelovic/gpt-researcher",
+        "toeverything/AFFiNE",
+        "Mintplex-Labs/anything-llm",
+        "sweepai/sweep",
+        "embedchain/embedchain",
+        "bentoml/OpenLLM",
+        "griptape-ai/griptape",
+        "StanGirard/quivr",
+        "hwchase17/langchain",
+        "continuedev/continue",
+        "open-webui/open-webui",
+        "ollama/ollama",
+        "BerriAI/litellm",
+        "Kong/kong",
+        "Kong/kong-manager",
     ]
 
     stats = GithubStats(TOKEN)
 
     data = []
-    for owner, repo in repositories:
+
+    for owner, repo in (item.split('/') for item in repositories):
+    # for owner, repo in repositories:
         repo_stats = stats.get_repo_stats(owner, repo)
         data.append(repo_stats)
         # print(repo_stats)
@@ -45,7 +58,7 @@ def load_or_fetch_data(filename) -> DataFrame:
     """
     if os.path.exists(filename):
         file_age = time.time() - os.path.getmtime(filename)
-        if file_age < 86400: # 86400 seconds = 24 hours
+        if file_age < float(REPORT_EXPIRY_IN_SECONDS):
             # Load dataframe from CSV file
             return pd.read_csv(filename)
 
