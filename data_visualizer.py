@@ -22,18 +22,17 @@ class DataVisualizer:
         def ticker_formatter(value, tick_number):
             # convert value to thousands
             if value >= 1000:
-                value_in_k = int(value/1000)
+                value_in_k = int(value / 1000)
                 return f'{value_in_k}K'
             else:
                 return int(value)
 
         # Function to format the numbers
         def format_num(num):
-            return str(num) if num < 1000 else str(np.round(num/1000, 1)) + 'K'
+            return str(num) if num < 1000 else str(np.round(num / 1000, 1)) + 'K'
 
         # Set up the figure and the axes
         fig, axs = plt.subplots(nrows=3, figsize=(10, 8))
-        # fig.subplots_adjust(top=0.9)  # Adjust the top space
 
         # Use FuncFormatter to apply the function to the y-axis labels
         formatter = ticker.FuncFormatter(ticker_formatter)
@@ -45,6 +44,8 @@ class DataVisualizer:
         axs[0].set_ylabel('Number of Contributors')
         for i, v in enumerate(self.data_frame['Number of Contributors']):
             axs[0].text(i, v + 3, format_num(v), ha='center', va='bottom')
+        max_height = max(self.data_frame['Number of Contributors'])
+        axs[0].set_ylim(0, max_height * 1.2)
         axs[0].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for better visibility
 
         # Number of Stars
@@ -53,6 +54,8 @@ class DataVisualizer:
         axs[1].set_ylabel('Number of Stars')
         for i, v in enumerate(self.data_frame['Stars']):
             axs[1].text(i, v + 3, format_num(v), ha='center', va='bottom')
+        max_height = max(self.data_frame['Stars'])
+        axs[1].set_ylim(0, max_height * 1.2)
         axs[1].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for better visibility
 
         # Average Commits per Month
@@ -62,6 +65,8 @@ class DataVisualizer:
         axs[2].set_ylabel('Average Commits per Month')
         for i, v in enumerate(self.data_frame['Average Commits per Month']):
             axs[2].text(i, v + 3, format_num(round(v)), ha='center', va='bottom')
+        max_height = max(self.data_frame['Average Commits per Month'])
+        axs[2].set_ylim(0, max_height * 1.2)
         axs[2].tick_params(axis='x', rotation=45)  # Rotate x-axis labels for better visibility
 
         # Adjust the layout
