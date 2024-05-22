@@ -14,30 +14,11 @@ REPORT_EXPIRY_IN_SECONDS = os.getenv("REPORT_EXPIRY_IN_SECONDS")
 
 def fetch_data() -> list:
     """ Fetch data from GitHub """
-    repositories = [
-        "beam-cloud/beta9",
-        "PawanOsman/ChatGPT",
-        "myshell-ai/OpenVoice",
-        "unslothai/unsloth",
-        "infiniflow/ragflow",
-        "ItzCrazyKns/Perplexica",
-        "VinciGit00/Scrapegraph-ai",
-        "assafelovic/gpt-researcher",
-        "toeverything/AFFiNE",
-        "Mintplex-Labs/anything-llm",
-        "sweepai/sweep",
-        "embedchain/embedchain",
-        "bentoml/OpenLLM",
-        "griptape-ai/griptape",
-        "StanGirard/quivr",
-        "hwchase17/langchain",
-        "continuedev/continue",
-        "open-webui/open-webui",
-        "ollama/ollama",
-        "BerriAI/litellm",
-        "Kong/kong",
-        "Kong/kong-manager",
-    ]
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv("path_to_your_csv_file/repositories.csv")
+
+    # Convert the DataFrame to a list
+    repositories = df["Repositories"].tolist()
 
     stats = GithubStats(TOKEN)
 
