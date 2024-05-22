@@ -19,7 +19,7 @@ class DataVisualizer:
     def plot_data(self):
         """ Plot the data as a bar chart """
         # Function that converts large numbers to 'K' (thousands)
-        def ticker_formatter(value, tick_number):
+        def ticker_formatter(value, _tick_number):
             # convert value to thousands
             if value >= 1000:
                 value_in_k = int(value / 1000)
@@ -44,11 +44,12 @@ class DataVisualizer:
             ax.tick_params(axis='x', rotation=45)
 
         # Set up the figure and the axes
-        fig, axs = plt.subplots(nrows=3, figsize=(10, 8))
+        _fig, axs = plt.subplots(nrows=3, figsize=(10, 8))
 
         # Use FuncFormatter to apply the function to the y-axis labels
         formatter = ticker.FuncFormatter(ticker_formatter)
-        [ax.yaxis.set_major_formatter(formatter) for ax in axs]
+        for ax in axs:
+            ax.yaxis.set_major_formatter(formatter)
 
         # Create bar charts
         create_bar_chart(axs[0], 'Number of Contributors for Each Project', 'Number of Contributors', 'Number of Contributors')
